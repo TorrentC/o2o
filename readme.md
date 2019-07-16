@@ -1,7 +1,8 @@
 ## 这是一个关于ssm项目的实战案例
 
-1.logback的配置
-增加了logback.xml文件 在AreaController中做了关于日志的的测试
+####7 16 am
+主要写了两个工具类 FileUtil.java ImgUtil.java
+其中FileUtil提供绝对路径和相对路径以及随机文件名
 
-2.开始实战
-主要包括增加店铺和更新店铺的测试
+ImgUtil主要对上传的文件进行水印处理 将其写入到指定的文件夹下;
+

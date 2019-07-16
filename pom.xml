@@ -164,6 +164,14 @@
             <version>3.2</version>
         </dependency>
 
+        <!-- 处理图片 -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
