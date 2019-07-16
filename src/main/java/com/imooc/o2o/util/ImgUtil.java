@@ -1,7 +1,10 @@
 package com.imooc.o2o.util;
 
+import com.imooc.o2o.web.superadmin.AreaController;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -10,6 +13,7 @@ import java.io.IOException;
 public class ImgUtil {
 
     private final static String basePath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+    private final static Logger logger = LoggerFactory.getLogger(ImgUtil.class);
 
     /**
      * 创建缩略图
@@ -25,7 +29,11 @@ public class ImgUtil {
 
         //获取相对路径 绝对路径
         String relativePath = targetAddr + randomFileName + extension;
+
+        logger.info("thumbnail relative path is {}", relativePath);
+
         String realPath = FileUtil.getImgBasePath() + relativePath;
+        logger.info("thumbnail real path is {}", realPath);
 
         try {
             Thumbnails.of(thumbnail)
@@ -48,10 +56,12 @@ public class ImgUtil {
 
     private static void mkdir(String targetAddr) {
 
+
         String realPath = FileUtil.getImgBasePath() + targetAddr;
         File file = new File(realPath);
         if (!file.exists()) {
             file.mkdirs();
+            logger.info("mkdir {}", realPath);
         }
     }
 
@@ -75,7 +85,7 @@ public class ImgUtil {
 //                // 压缩后图片位置
 //                .toFile("src/main/resources/img/002New.png");
 
-        String s = generateThumbnail(new File("/home/torrent/桌面/5.jpeg"), FileUtil.getShopImgPath(1l));
+        String s = generateThumbnail(new File("/home/torrent/IdeaProjects/o2o/src/main/resources/img/img.jpeg"), FileUtil.getShopImgPath(3l));
         System.out.println(s);
     }
 }

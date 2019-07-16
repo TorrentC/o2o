@@ -1,8 +1,8 @@
 ## 这是一个关于ssm项目的实战案例
 
-####7 16 am
-主要写了两个工具类 FileUtil.java ImgUtil.java
-其中FileUtil提供绝对路径和相对路径以及随机文件名
+####7 16 pm
+写了一个枚举类ShopStateEnum 熟悉了枚举的使用方法
+写了一个dto(ShopExecution) 封装了ShopStateEnum和Shop类
+写了ShopServiceImp类实现了addShop方法
 
-ImgUtil主要对上传的文件进行水印处理 将其写入到指定的文件夹下;
 
