@@ -1,5 +1,10 @@
 package com.imooc.o2o.util;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -20,4 +25,5 @@ public class FileUtil {
     public static String getRandomFileName() {
         return format.format(new Date()) + (random.nextInt(9999) + 10000);
     }
+
 }

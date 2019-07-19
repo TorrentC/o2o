@@ -63,4 +63,12 @@ public class ShopServiceImp implements ShopService {
 
         return new ShopExecution(ShopStateEnum.CHECK, shop);
     }
+
+    @Override
+    public ShopExecution addShop(Shop shop) {
+        shopDao.insertShop(shop);
+        return null;
+    }
+
+
 }
