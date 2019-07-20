@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.InputStream;
 
 public interface ShopService {
-    ShopExecution addShop(Shop shop, File shopImg);
     ShopExecution addShop(Shop shop);
 
     /**

@@ -8,6 +8,7 @@ import com.imooc.o2o.entity.PersonInfo;
 import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.entity.ShopCategory;
 import com.imooc.o2o.enums.ShopStateEnum;
+import com.imooc.o2o.exceptions.ShopOperateException;
 import com.imooc.o2o.service.AreaService;
 import com.imooc.o2o.service.ShopCategoryService;
 import com.imooc.o2o.service.ShopService;
@@ -94,10 +95,7 @@ public class ShopManagerController {
     public Map<String, Object> register(HttpServletRequest request) {
         Map<String, Object> model = new HashMap<>();
 
-        //获取不了验证码
 
-        String codeActual = request.getParameter("verifyCodeActual");
-        System.out.println(codeActual);
         //验证码测试是否通过
         boolean pass = CodeUtil.compare(request);
         if (!pass) {
@@ -106,9 +104,82 @@ public class ShopManagerController {
             return model;
         }
 
+        //获取店铺相关信息
+        String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
+        //将json信息封装成一个shop对象
+        ObjectMapper mapper = new ObjectMapper();
+
+        Shop shop = null;
+
+        try {
+            shop = mapper.readValue(shopStr, Shop.class);
+        } catch (IOException e) {
+            model.put("success", false);
+            model.put("errMsg", e.getMessage());
+            return model;
+        }
+
+        //将表单数据写入数据库
+
+        // 1.判断shop数据是否为空
+        if (shop == null || shop.getShopName() == null) {
+            model.put("success", false);
+            model.put("errMsg", "用户名不能为空");
+            return model;
+        }
+
+        // 2.从session中获取用户userId
+
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(1l);
+
+        shop.setOwner(owner);
+
+        // 3.添加到数据库
+        ShopExecution shopExecution = shopService.addShop(shop);
+
+        if (shopExecution.getState() != ShopStateEnum.CHECK.getState()) {
+            model.put("success", false);
+            model.put("errMsg", shopExecution.getStateInfo());
+            return model;
+        }
+
+        //获取上传图片
+        MultipartHttpServletRequest multipartHttpServletRequest = null;
+        MultipartFile shopImg = null;
+        MultipartResolver  mutipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+                // 判断request 是否有文件上传请求
+        if(mutipartResolver.isMultipart(request)) {
+            multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+                // 获取request中上传文件中的shopImg文件
+            shopImg = multipartHttpServletRequest.getFile("shopImg");
+        }
+
+        //将shopImg信息写入到数据库
+        if (shopImg != null) {
+            try {
+                //不符合预期 抛出异常
+                ShopExecution modifyShop = shopService.modifyShop(shop, shopImg.getInputStream(), shopImg.getOriginalFilename());
+                if (modifyShop.getState() != ShopStateEnum.SUCCESS.getState()) {
+                    throw new ShopOperateException("图片上传异常");
+                }
+            } catch (ShopOperateException | IOException e) {
+                model.put("success", false);
+                model.put("errMsg", e.getMessage());
+                return model;
+            }
+        }
+
+
         model.put("success", true);
 
         return model;
+    }
+
+    @RequestMapping(value = "/updateshop", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> updateShop() {
+        return null;
     }
 
 

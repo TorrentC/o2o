@@ -44,8 +44,6 @@ public class ShopServiceTest extends BaseTest {
         shop.setShopAddr("address");
         shop.setShopDesc("奶茶店");
 
-        ShopExecution shopExecution = shopService.addShop(null, new File("/home/torrent/IdeaProjects/o2o/src/main/resources/img/img.jpeg"));
-        System.out.println(shopExecution.getStateInfo());
     }
 
     @Test
