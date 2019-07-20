@@ -80,4 +80,15 @@ public class ShopExecution {
     public void setCount(int count) {
         this.count = count;
     }
+
+    @Override
+    public String toString() {
+        return "ShopExecution{" +
+                "state=" + state +
+                ", stateInfo='" + stateInfo + '\'' +
+                ", shop=" + shop +
+                ", shopList=" + shopList +
+                ", count=" + count +
+                '}';
+    }
 }

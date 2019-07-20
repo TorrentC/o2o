@@ -5,10 +5,12 @@
     <title>Upload</title>
 </head>
 <body>
-<form action="upload" method="post" enctype="multipart/form-data">
-    名称:<input type="text" name="picname"/><br/>
-    图片:<input type="file" name="shopImg"/><br/>
-    <input type="submit" value=" 上传 "/>
+<form action="http://localhost:8080/o2o/shopadmin/test" method="post">
+    <form action="/fileUpload" method="post" enctype="multipart/form-data">
+        名称:<input type="text" name="picname"/><br/>
+        图片:<input type="file" name="uploadFile"/><br/>
+        <input type="submit" value=" 上传 "/>
+    </form>
 </form>
 </body>
 </html>

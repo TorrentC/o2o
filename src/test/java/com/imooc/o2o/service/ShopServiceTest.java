@@ -1,6 +1,7 @@
 package com.imooc.o2o.service;
 
 import com.imooc.o2o.BaseTest;
+import com.imooc.o2o.dao.ShopDao;
 import com.imooc.o2o.dto.ShopExecution;
 import com.imooc.o2o.entity.Area;
 import com.imooc.o2o.entity.PersonInfo;
@@ -10,11 +11,16 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Date;
 
 public class ShopServiceTest extends BaseTest {
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private ShopDao shopDao;
 
     @Test
     public void testAddShop() {
@@ -40,5 +46,14 @@ public class ShopServiceTest extends BaseTest {
 
         ShopExecution shopExecution = shopService.addShop(null, new File("/home/torrent/IdeaProjects/o2o/src/main/resources/img/img.jpeg"));
         System.out.println(shopExecution.getStateInfo());
+    }
+
+    @Test
+    public void modifyShopTest() throws FileNotFoundException {
+
+        Shop shop = shopDao.queryByShopId(4l);
+
+        ShopExecution shopExecution = shopService.modifyShop(shop, new FileInputStream("/home/torrent/桌面/1.jpg"), "1.jpg");
+        System.out.println(shopExecution);
     }
 }

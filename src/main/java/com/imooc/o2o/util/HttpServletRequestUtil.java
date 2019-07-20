@@ -11,4 +11,16 @@ public class HttpServletRequestUtil {
 
         return value.trim();
     }
+
+    public static long getLong(HttpServletRequest request, String key) {
+        String parameter = request.getParameter(key);
+
+        long l;
+        try {
+            l = Long.parseLong(parameter);
+        } catch (NumberFormatException e) {
+            l = -1;
+        }
+        return l;
+    }
 }

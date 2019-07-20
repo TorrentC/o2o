@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImgUtil {
 
@@ -20,11 +22,11 @@ public class ImgUtil {
      * 创建缩略图
      * return 相对路径
      */
-    public static String generateThumbnail(File thumbnail, String targetAddr) {
+    public static String generateThumbnail(InputStream thumbnailInputStream, String filename, String targetAddr) {
         //1.获取随机文件名
         String randomFileName = FileUtil.getRandomFileName();
         //2.获取文件拓展
-        String extension = getFileExtension(thumbnail);
+        String extension = getFileExtension(filename);
         //3.创建目录
         mkdir(targetAddr);
 
@@ -37,7 +39,7 @@ public class ImgUtil {
         logger.info("thumbnail real path is {}", realPath);
 
         try {
-            Thumbnails.of(thumbnail)
+            Thumbnails.of(thumbnailInputStream)
                     // 压缩后图片大小
                     .size(318, 450)
                     // 水印图片
@@ -67,9 +69,8 @@ public class ImgUtil {
         }
     }
 
-    private static String getFileExtension(File thumbnail) {
-        String name = thumbnail.getName();
-        return name.substring(name.lastIndexOf("."));
+    private static String getFileExtension(String filename) {
+        return filename.substring(filename.lastIndexOf("."));
     }
 
 
@@ -87,7 +88,25 @@ public class ImgUtil {
 //                // 压缩后图片位置
 //                .toFile("src/main/resources/img/002New.png");
 
-        String s = generateThumbnail(new File("/home/torrent/IdeaProjects/o2o/src/main/resources/img/img.jpeg"), FileUtil.getShopImgPath(3l));
+        String s = generateThumbnail(new FileInputStream("/home/torrent/IdeaProjects/o2o/src/main/resources/img/img.jpeg"), "img.jpeg", FileUtil.getShopImgPath(1l));
         System.out.println(s);
+    }
+
+    public static void deletePathOrFile(String storePath) {
+        File fileOrPath = new File(FileUtil.getImgBasePath() + storePath);
+        //不存在直接返回
+        if (!fileOrPath.exists()) {
+            return;
+        }
+
+        //如果是目录 删除下面的文件
+        if (fileOrPath.isDirectory()) {
+            File[] listFiles = fileOrPath.listFiles();
+            for (File listFile : listFiles) {
+                listFile.delete();
+            }
+        }
+
+        fileOrPath.delete();
     }
 }

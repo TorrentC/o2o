@@ -16,6 +16,12 @@ public class ShopDaoTest extends BaseTest {
     private ShopDao shopDao;
 
     @Test
+    public void queryByShopIdTest() {
+        Shop shop = shopDao.queryByShopId(4l);
+        System.out.println(shop);
+    }
+
+    @Test
     public void insertShopTest() {
 
 
