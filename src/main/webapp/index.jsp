@@ -4,6 +4,8 @@
 <body>
 <h2>Hello World!</h2>
 <a href="shopadmin/shopoperation">注册店铺</a>
+<a href="shopadmin/shoplist">店铺列表</a>
+<a href="shopadmin/shopmanagement">店铺管理</a>
 
 <select id="a">
 <%--    <option value="1">2</option>--%>

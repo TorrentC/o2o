@@ -54,4 +54,19 @@ public class ShopServiceTest extends BaseTest {
         ShopExecution shopExecution = shopService.modifyShop(shop, new FileInputStream("/home/torrent/桌面/1.jpg"), "1.jpg");
         System.out.println(shopExecution);
     }
+
+    @Test
+    public void getShopList() {
+
+
+        Shop shop1 = new Shop();
+        ShopCategory shopCategory = new ShopCategory();
+        shopCategory.setShopCategoryId(1l);
+        shop1.setShopCategory(shopCategory);
+        ShopExecution execution = shopService.getShopList(shop1, 1, 2);
+        System.out.println(execution.getCount());
+        for (Shop shop : execution.getShopList()) {
+            System.out.println(shop);
+        }
+    }
 }

@@ -7,15 +7,15 @@ $(function() {
 	// 如果shopId为空，就是注册， 否则为修改
 	var isEdit = shopId ? true : false;
 	// 初始化店铺信息：店铺分类和区域信息列表，用于注册店铺
-	var initUrl = "/o2o/shopadmin/getshopinitinfo";
-
+	var initUrl = "/ssm/shopadmin/getshopinitinfo";
+	
 	// alert(initUrl);
 	// 注册店铺
-	var registerShopUrl = "/o2o/shopadmin/registershop";
+	var registerShopUrl = "/ssm/shopadmin/registershop";
 	// 根据shopid获取店铺详情，用于修改店铺信息
-	var shopInfoUrl = "/o2o/shopadmin/getshopbyid?shopId=" + shopId;
+	var shopInfoUrl = "/ssm/shopadmin/getshopbyid?shopId=" + shopId;
 	// 修改店铺
-	var modifyShopUrl = "/o2o/shopadmin/updateshop";
+	var modifyShopUrl = "/ssm/shopadmin/updateshop";
 
 	// 初始化
 	if (isEdit) {
@@ -41,8 +41,8 @@ $(function() {
 				$('#shop-desc').val(shop.shopDesc);
 				// 商品目录进行赋值 商品目录仅仅加载对应的目录，且不可编辑
 				var shopCategory = '<option data-id="'
-					+ shop.shopCategory.shopCategoryId + '" selected>'
-					+ shop.shopCategory.shopCategoryName + '</option>';
+						+ shop.shopCategory.shopCategoryId + '" selected>'
+						+ shop.shopCategory.shopCategoryName + '</option>';
 				$('#shop-category').html(shopCategory);
 				// 设置为不可编辑
 				$('#shop-category').attr('disabled', 'disabled');
@@ -51,12 +51,12 @@ $(function() {
 				var tempShopAreaHtml = '';
 				data.areaList.map(function(item, index) {
 					tempShopAreaHtml += '<option data-id="' + item.areaId
-						+ '">' + item.areaName + '</option>';
+							+ '">' + item.areaName + '</option>';
 				});
 				$('#area').html(tempShopAreaHtml);
 				// 初始设置为后台对应的区域
 				$("#area option[data-id='" + shop.area.areaId + "']")
-					.attr("selected", "selected");
+						.attr("selected", "selected");
 			} else {
 				$.toast(data.errMsg);
 			}
@@ -75,12 +75,12 @@ $(function() {
 				// 迭代店铺分类列表
 				data.shopCategoryList.map(function(item, index) {
 					tempHtml += '<option data-id="' + item.shopCategoryId
-						+ '">' + item.shopCategoryName + '</option>';
+							+ '">' + item.shopCategoryName + '</option>';
 				});
 				// 迭代区域信息
 				data.areaList.map(function(item, index) {
 					tempAreaHtml += '<option data-id="' + item.areaId + '">'
-						+ item.areaName + '</option>';
+							+ item.areaName + '</option>';
 				});
 				$('#shop-category').html(tempHtml);
 				$('#area').html(tempAreaHtml);

@@ -9,11 +9,30 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 public class ShopDaoTest extends BaseTest {
 
     @Autowired
     private ShopDao shopDao;
+
+    /**
+     * 根据条件, 分页查询
+     */
+    @Test
+    public void queryShopListTest() {
+
+        Shop shop1 = new Shop();
+        shop1.setShopName("测");
+
+        List<Shop> shops = shopDao.queryShopList(shop1, 0, 5);
+        for (Shop shop : shops) {
+            System.out.println(shop);
+        }
+
+//        int i = shopDao.queryShopCount(shop1);
+//        System.out.println(i);
+    }
 
     @Test
     public void queryByShopIdTest() {

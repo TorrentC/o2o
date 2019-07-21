@@ -17,4 +17,6 @@ public interface ShopService {
     Shop getByShopId(Long shopId);
 
     ShopExecution modifyShop(Shop shop, InputStream shopImgInputStream, String filename);
+
+    ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize);
 }

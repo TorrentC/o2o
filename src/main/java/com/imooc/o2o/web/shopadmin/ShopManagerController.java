@@ -44,6 +44,40 @@ public class ShopManagerController {
     @Autowired
     private AreaService areaService;
 
+    @RequestMapping("/getshoplist")
+    @ResponseBody
+    public Map<String, Object> getShopList() {
+
+        Map<String, Object> model = new HashMap<>();
+        //从session中获取user信息
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1l);
+        user.setName("唐嫣");
+        Shop shop = new Shop();
+        shop.setOwner(user);
+
+        try {
+            ShopExecution shopExecution = shopService.getShopList(shop, 0, 200);
+
+            if (shopExecution.getState() != ShopStateEnum.SUCCESS.getState()) {
+                model.put("success", false);
+                model.put("errMsg", shopExecution.getStateInfo());
+                return model;
+            }
+
+            model.put("shopList", shopExecution.getShopList());
+            model.put("user", user);
+            model.put("success", true);
+
+            return model;
+        } catch (Exception e) {
+            model.put("success", false);
+            model.put("errMsg", e.getMessage());
+            return model;
+        }
+
+    }
+
     @RequestMapping("/getshopbyid")
     @ResponseBody
     public Map<String, Object> getShopById(HttpServletRequest request) {
@@ -180,6 +214,37 @@ public class ShopManagerController {
     @ResponseBody
     public Map<String, Object> updateShop() {
         return null;
+    }
+
+
+    @RequestMapping("/getshopmanagementinfo")
+    @ResponseBody
+    public Map<String, Object> getShopManageInfo(HttpServletRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        //从session中获取当前店铺信息
+        Shop currentShop = new Shop();
+        currentShop.setShopId(6l);
+
+        long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+
+        if (shopId > 0) {
+
+            model.put("redirect", false);
+            model.put("shopId", currentShop.getShopId());
+
+        } else {
+            if(currentShop == null) {
+                model.put("redirect", true);
+                model.put("url", "o2o/shopadmin/shoplist");
+            }
+            else {
+                model.put("redirect", false);
+                model.put("shopId", currentShop.getShopId());
+            }
+
+        }
+
+        return model;
     }
 
 

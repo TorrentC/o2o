@@ -8,6 +8,7 @@ import com.imooc.o2o.exceptions.ShopOperateException;
 import com.imooc.o2o.service.ShopService;
 import com.imooc.o2o.util.FileUtil;
 import com.imooc.o2o.util.ImgUtil;
+import com.imooc.o2o.util.PageCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ShopServiceImp implements ShopService {
@@ -103,6 +105,26 @@ public class ShopServiceImp implements ShopService {
         } catch (Exception e) {
             throw new ShopOperateException("modify error:" + e.getMessage());
         }
+    }
+
+    @Override
+    public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
+
+        int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+        List<Shop> shopList = shopDao.queryShopList(shopCondition, rowIndex, pageSize);
+        int i = shopDao.queryShopCount(shopCondition);
+        ShopExecution shopExecution = new ShopExecution();
+
+        if (shopList == null) {
+            shopExecution.setState(ShopStateEnum.INNER_ERROR.getState());
+            return shopExecution;
+        }
+
+        shopExecution.setShopList(shopList);
+        shopExecution.setCount(i);
+        shopExecution.setState(ShopStateEnum.SUCCESS.getState());
+
+        return shopExecution;
     }
 
     private void addShopImg(Shop shop, InputStream shopImgInputStream, String filename) {
